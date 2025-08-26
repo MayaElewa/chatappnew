@@ -25,7 +25,7 @@ class Scholarchat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {  
+      routes: {
         LoginPage.id: (context) => LoginPage(),
         RegisterPage.id: (context) => RegisterPage(),
         chatpage.id: (context) => chatpage(),

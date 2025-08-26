@@ -49,19 +49,21 @@ class _loginPageState extends State<LoginPage> {
                 TextFieldcustom(
                   onchanged: (data) {
                     email = data;
-                         const Color.fromARGB(255, 255, 255, 255);
+                    const Color.fromARGB(255, 255, 255, 255);
                   },
                   hintText: "email",
                   obscureText: false,
+                  validator: (value) {},
                 ),
                 const SizedBox(height: 10),
                 TextFieldcustom(
                   onchanged: (data) {
                     password = data;
-                         const Color.fromARGB(255, 255, 255, 255);
+                    const Color.fromARGB(255, 255, 255, 255);
                   },
                   hintText: "password",
                   obscureText: true,
+                  validator: (value) {},
                 ),
                 const SizedBox(height: 20),
                 CustumButton(
@@ -80,6 +82,10 @@ class _loginPageState extends State<LoginPage> {
                       // ); => way 1
 
                       try {
+                        await loginUser();
+                        Navigator.pushNamed(context, chatpage.id,
+                            arguments: email);
+
                         UserCredential userCredential = await FirebaseAuth
                             .instance
                             .signInWithEmailAndPassword(
@@ -170,7 +176,7 @@ class _loginPageState extends State<LoginPage> {
 
   Future<void> loginUser() async {
     UserCredential user =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email!,
       password: password!,
     );

@@ -33,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Form(
-            /////     key: ,
+            key: formKey,
             child: ListView(
               children: [
                 const SizedBox(height: 1),
@@ -52,20 +52,36 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 32.0),
                 TextFieldcustom(
-                    onchanged: (data) {
-                      email = data;
-                      const Color.fromARGB(255, 255, 255, 255);
-                    },
-                    hintText: "email",
-                    obscureText: false),
+                  onchanged: (data) {
+                    email = data;
+                    const Color.fromARGB(255, 255, 255, 255);
+                  },
+                  hintText: "email",
+                  obscureText: false,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your email";
+                    }
+                    return null;
+                  },
+                ),
                 const SizedBox(height: 10),
                 TextFieldcustom(
                   onchanged: (data) {
                     password = data;
-                         const Color.fromARGB(255, 255, 255, 255);
+                    const Color.fromARGB(255, 255, 255, 255);
                   },
                   hintText: 'Password',
                   obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your password";
+                    }
+                    if (value.length < 6) {
+                      return "Password must be at least 6 characters";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
                 ////////////////////////////////////////////////////////////////////
@@ -95,22 +111,27 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.pushNamed(context, chatpage.id);
                       } on FirebaseAuthException catch (e) {
                         if (e.code == "weak-password") {
-                          showSnackBar(context, "weak-password",
+                          showSnackBar(context, "Weak password",
                               backgroundColor: Colors.orange);
                         } else if (e.code == "email-already-in-use") {
-                          showSnackBar(context, "email-already-in-use",
+                          showSnackBar(context, "Email already in use",
+                              backgroundColor: Colors.red);
+                        } else if (e.code == "invalid-email") {
+                          showSnackBar(context, "Invalid email",
+                              backgroundColor: Colors.red);
+                        } else {
+                          showSnackBar(context, "Error: ${e.message}",
                               backgroundColor: Colors.red);
                         }
+                        isLoading = false;
+                        setState(() {});
                       }
-                      isLoading = false;
-                      setState(() {});
+                      //  ),
                     }
-                    //  ),
-
-                    else {}
                   },
                   title: 'Register',
                 ),
+
                 const SizedBox(height: 20),
 
                 // const SizedBox(height: 30);
